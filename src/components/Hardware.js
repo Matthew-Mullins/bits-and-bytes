@@ -13,24 +13,30 @@ class Hardware extends React.Component {
         super(props)
         this.props = props
         let hardware = this.props.hardware
-        this.state = {
-            type: hardware.type,
-            name: hardware.name,
-            initial_cost: hardware.initial_cost,
-            coefficient: hardware.coefficient,
-            initial_time: hardware.initial_time,
-            initial_revenue: hardware.initial_revenue,
-            initial_storage: hardware.initial_storage,
-            has_started: false,
-            quantity: 1,
-            cost: hardware.initial_cost,
-            cost_scale: 1,
-            time: hardware.initial_time,
-            start_time: 0,
-            time_left: 0,
-            revenue: 0,
-            revenue_scale: 1,
-            is_managed: false
+        const localState = window.localStorage.getItem(hardware.type);
+        if (localState !== null) {
+            this.state = JSON.parse(localState)
+            this.startInterval()
+        } else {
+            this.state = {
+                type: hardware.type,
+                name: hardware.name,
+                initial_cost: hardware.initial_cost,
+                coefficient: hardware.coefficient,
+                initial_time: hardware.initial_time,
+                initial_revenue: hardware.initial_revenue,
+                initial_storage: hardware.initial_storage,
+                has_started: false,
+                quantity: 1,
+                cost: hardware.initial_cost,
+                cost_scale: 1,
+                time: hardware.initial_time,
+                start_time: 0,
+                time_left: 0,
+                revenue: 0,
+                revenue_scale: 1,
+                is_managed: false
+            }
         }
     }
 
@@ -45,6 +51,10 @@ class Hardware extends React.Component {
             start_time: now,
             time_left: this.state.time
         })
+        this.startInterval()
+    }
+
+    startInterval() {
         const interval = setInterval(() => {
             this.update()
         }, (1 / 60))
@@ -60,14 +70,22 @@ class Hardware extends React.Component {
         this.setState({
             time_left: time_left <= 0 ? 0 : time_left
         })
+        localStorage.setItem(this.state.type, JSON.stringify(this.state))
         if (time_left <= 0) {
             this.props.gainRevenue(this.state.revenue)
-            clearInterval(this.start.interval)
+            clearInterval(this.startInterval.interval)
             this.state.has_started = false
             if (this.state.is_managed) {
                 this.start()
             }
         }
+    }
+
+    updateRevenue() {
+        const revenue = this.state.initial_revenue * this.state.quantity * this.state.revenue_scale
+        this.setState({
+            revenue: revenue
+        })
     }
 
     render() {
@@ -76,12 +94,18 @@ class Hardware extends React.Component {
                 <button id="start-button" onClick={() => this.start()} ><h5>START</h5></button>
                 <div id="content">
                     <h3 id="name">{this.state.name}</h3>
-                    <h3 id="time_left">{this.state.time_left}</h3>
+                    <h3 id="time_left">{(this.state.time_left / 1000).toFixed(2)}</h3>
                     <h3 id="cost">{this.state.cost}</h3>
                     <h3 id="revenue">{this.state.revenue}</h3>
                 </div>
             </div>
         )
+    }
+
+    componentWillUnmount() {
+        if (this.startInterval.interval !== null) {
+            clearInterval(this.startInterval.interval)
+        }
     }
 }
 export default Hardware

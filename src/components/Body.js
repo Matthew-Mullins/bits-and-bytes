@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
-import ContentEnum from '../Game.js'
+import Game from '../Game.js'
 import Hardwares from './Hardwares'
-const Body = ({ contentToShow }) => {
+const Body = ({ contentToShow, gainRevenue }) => {
     return (
         <div className='body'>
-            {contentToShow}
+            {contentToShow === Game.ContentEnum.HARDWARES && <Hardwares gainRevenue={gainRevenue}/>}
         </div>
     )
 }

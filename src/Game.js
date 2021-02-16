@@ -2,17 +2,16 @@ import React from 'react'
 import NavBar from './components/NavBar'
 import Content from './components/Content'
 
-import Hardwares from './components/Hardwares'
 // import Facilities from './components/Facilities'
 
 class Game extends React.Component {
     static ContentEnum = {
-        HARDWARES: <Hardwares gainRevenue={this.gainRevenue} />,
-        FACILITIES: '',
-        UPGRADES: '',
-        UNLOCKS: '',
-        INVESTORS: '',
-        STATS: ''
+        HARDWARES: 0,
+        FACILITIES: 1,
+        UPGRADES: 2,
+        UNLOCKS: 3,
+        INVESTORS: 4,
+        STATS: 5
     }
 
     constructor(props) {
@@ -45,7 +44,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <NavBar onChange={this.onChange}/>
-                <Content contentToShow={this.state.cur_content} currCurrency={this.state.curr_currency} />
+                <Content contentToShow={this.state.cur_content} currCurrency={this.state.curr_currency} gainRevenue={this.gainRevenue}/>
             </div>
         )
     }
