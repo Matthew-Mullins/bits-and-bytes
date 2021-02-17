@@ -140,39 +140,48 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 50px;
-  align-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 20px 40px 40px;
+}
+
+.hardware #content #quantity {
+  color: white;
+  margin: 0;
+  text-align: right;
+  font-size: 100%;
+  align-self: flex-start;
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .hardware #content #name {
   color: white;
   margin: 0;
   text-align: left;
-  font-size: 28px;
-  align-self: center;
-  grid-column: 1 / span 2;
+  font-size: 100%;
+  align-self: flex-end;
+  grid-column: 1 / span 3;
   grid-row: 1;
 }
 
 .hardware #content #time_left {
   color: white;
   margin: 0;
-  text-align: right;
-  font-size: 28px;
+  text-align: center;
+  font-size: 150%;
   align-self: flex-start;
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 1;
+  grid-row: 2;
 }
 
 .hardware #content #time_left_suffix {
   color: white;
   margin: 0;
-  text-align: right;
-  font-size: 28px;
+  text-align: center;
+  font-size: 80;
   align-self: flex-end;
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 1;
+  grid-row: 2;
 }
 
 .hardware #content #purchase_button {
@@ -181,10 +190,10 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   border: 1px solid white;
   background-color: black;
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 20px;
+  grid-auto-rows: repeat(2, 1fr);
 }
 
 .hardware #content #purchase_button:hover {
@@ -205,7 +214,7 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   color: white;
   margin: 0;
   text-align: center;
-  font-size: 32px;
+  font-size: 150%;
   grid-column: 1;
   grid-row: 1 / span 2;
   align-self: center;
@@ -215,16 +224,28 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   color: white;
   margin: 0;
   text-align: right;
-  font-size: 21px;
+  font-size: 110%;
   grid-column: 2;
   grid-row: 1;
+  align-self: center;
 }
 
 .hardware #content #cost_suffix {
   color: white;
   margin: 0;
   text-align: right;
-  font-size: 21px;
+  font-size: 110%;
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+}
+
+.hardware #content #revenue_text {
+  color: white;
+  margin: 0;
+  text-align: center;
+  font-size: 100%;
+  align-self: flex-end;
   grid-column: 2;
   grid-row: 2;
 }
@@ -232,21 +253,51 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
 .hardware #content #revenue {
   color: white;
   margin: 0;
-  text-align: right;
-  font-size: 28px;
+  text-align: center;
+  font-size: 150%;
   align-self: flex-start;
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
 }
 
 .hardware #content #revenue_suffix {
   color: white;
   margin: 0;
-  text-align: right;
-  font-size: 28px;
+  text-align: center;
+  font-size: 100%;
   align-self: flex-end;
   grid-column: 2;
+  grid-row: 3;
+}
+
+.hardware #content #storage_text {
+  color: white;
+  margin: 0;
+  text-align: center;
+  font-size: 100%;
+  align-self: flex-end;
+  grid-column: 3;
   grid-row: 2;
+}
+
+.hardware #content #storage {
+  color: white;
+  margin: 0;
+  text-align: center;
+  font-size: 150%;
+  align-self: flex-start;
+  grid-column: 3;
+  grid-row: 3;
+}
+
+.hardware #content #storage_suffix {
+  color: white;
+  margin: 0;
+  text-align: center;
+  font-size: 100%;
+  align-self: flex-end;
+  grid-column: 3;
+  grid-row: 3;
 }
 
 @media only screen and (max-width: 1425px) {

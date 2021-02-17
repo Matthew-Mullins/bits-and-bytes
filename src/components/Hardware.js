@@ -1,5 +1,5 @@
 import React from 'react'
-import { truncateCurrency, toHourMinSec } from '../utility/utility.js'
+import { truncateCurrency, truncateStorage, toHourMinSec } from '../utility/utility.js'
 
 // type: 'vaccuum_tube',
 // name: 'Vaccuum Tube',
@@ -36,6 +36,8 @@ class Hardware extends React.Component {
                 time_left: 0,
                 revenue: 0,
                 revenue_scale: 1,
+                storage: 0,
+                storage_scale: 1,
                 is_managed: false
             }
         }
@@ -85,7 +87,7 @@ class Hardware extends React.Component {
         this.setState({
             quantity: this.state.quantity + quantity_increase,
             cost: new_cost
-        }, () => this.updateRevenue())
+        }, () => {this.updateRevenue(); this.updateStorage(); localStorage.setItem(this.state.type, JSON.stringify(this.state))})
     }
 
     update() {
@@ -97,25 +99,31 @@ class Hardware extends React.Component {
         let time_left = (this.state.time * 1000) - (now - this.state.start_time)
         this.setState({
             time_left: time_left <= 0 ? 0 : time_left
-        })
+        }, () => localStorage.setItem(this.state.type, JSON.stringify(this.state)))
         if (time_left <= 0) {
             this.setState({
                 has_started: false
-            })
+            }, () => localStorage.setItem(this.state.type, JSON.stringify(this.state)))
             this.props.gainRevenue(this.state.revenue)
             clearInterval(this.interval)
             if (this.state.is_managed) {
                 this.start()
             }
         }
-        localStorage.setItem(this.state.type, JSON.stringify(this.state))
     }
 
     updateRevenue() {
         let new_revenue = this.state.initial_revenue * this.state.quantity * this.state.revenue_scale
         this.setState({
             revenue: new_revenue
-        })
+        }, localStorage.setItem(this.state.type, JSON.stringify(this.state)))
+    }
+
+    updateStorage() {
+        let new_storage = this.state.initial_storage * this.state.quantity * this.state.storage_scale
+        this.setState({
+            storage: new_storage
+        }, localStorage.setItem(this.state.type, JSON.stringify(this.state)))
     }
 
     render() {
@@ -123,7 +131,8 @@ class Hardware extends React.Component {
             <div className='hardware'>
                 <button id="start-button" onClick={() => this.start()} ><h5>START</h5></button>
                 <div id="content">
-                    <h3 id="name">{'[' + this.state.quantity + '] ' + this.state.name}</h3>
+                    <h3 id="quantity">{'[' + this.state.quantity + ']'}</h3>
+                    <h3 id="name">{this.state.name}</h3>
                     <h3 id="time_left">{toHourMinSec(this.state.time_left)}</h3>
                     <h3 id="time_left_suffix">HH:MM:SS</h3>
                     <button id="purchase_button" onClick={() => this.purchase(1)}>
@@ -131,17 +140,29 @@ class Hardware extends React.Component {
                             BUY 1
                         </h3>
                         <h3 id="cost">
-                            { String(truncateCurrency(this.state.cost).value.toFixed(2)).padStart(6, 0)}
+                            { String(truncateCurrency(this.state.cost).value.toFixed(2)).padStart(6)}
                         </h3>
                         <h3 id="cost_suffix">
                             { truncateCurrency(this.state.cost).suffix }
                         </h3>
                     </button>
+                    <h3 id="revenue_text">
+                        REVENUE
+                    </h3>
                     <h3 id="revenue">
-                            { String(truncateCurrency(this.state.revenue).value.toFixed(2)).padStart(6, 0)}
+                            { String(truncateCurrency(this.state.revenue).value.toFixed(2)).padStart(6)}
                         </h3>
                     <h3 id="revenue_suffix">
-                        { truncateCurrency(this.state.revenue).suffix }
+                        { truncateCurrency(this.state.initial_storage).suffix }
+                    </h3>
+                    <h3 id="storage_text">
+                        STORAGE
+                    </h3>
+                    <h3 id="storage">
+                        { String(truncateStorage(this.state.storage).value.toFixed(2)).padStart(7)}
+                    </h3>
+                    <h3 id="storage_suffix">
+                        { truncateStorage(this.state.storage).suffix }
                     </h3>
                 </div>
             </div>

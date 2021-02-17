@@ -12,14 +12,19 @@ const CURRENCY_SUFFIX = {
     DECILLION:  10 ** 33
 }
 
+const STORAGE_SUFFIX = {
+    KB: 1024,
+    MB: 1024 ** 2
+}
+
 export function truncateCurrency(value) {
     let result = 0
-    let suffix = ''
+    let suffix = '$'
     let prev_suffix = ''
     for (let key in CURRENCY_SUFFIX) {
         if (value < CURRENCY_SUFFIX[key]) {
             result = value / (CURRENCY_SUFFIX[key] / 1000)
-            suffix = prev_suffix
+            suffix = prev_suffix.substring(0, 3) + ' ' + suffix
             break
         }
         prev_suffix = key
@@ -29,7 +34,19 @@ export function truncateCurrency(value) {
 }
 
 export function truncateStorage(value) {
-    return
+    let result = 0
+    let suffix = 'B'
+    let prev_suffix = 'B'
+    for (let key in STORAGE_SUFFIX) {
+        if (value < STORAGE_SUFFIX[key]) {
+            result = value / (STORAGE_SUFFIX[key] / 1024)
+            suffix = prev_suffix
+            break
+        }
+        prev_suffix = key
+    }
+    let tuple = Object.freeze({value: result, suffix: suffix})
+    return tuple
 }
 
 export function toHourMinSec(time_ms) {
