@@ -1,4 +1,5 @@
 import React from 'react'
+import { truncateCurrency, toHourMinSec } from '../utility/utility.js'
 
 // type: 'vaccuum_tube',
 // name: 'Vaccuum Tube',
@@ -12,11 +13,11 @@ class Hardware extends React.Component {
     constructor(props) {
         super(props)
         this.props = props
+        this.interval = null
         let hardware = this.props.hardware
         const localState = window.localStorage.getItem(hardware.type);
         if (localState !== null) {
             this.state = JSON.parse(localState)
-            this.startInterval()
         } else {
             this.state = {
                 type: hardware.type,
@@ -27,7 +28,7 @@ class Hardware extends React.Component {
                 initial_revenue: hardware.initial_revenue,
                 initial_storage: hardware.initial_storage,
                 has_started: false,
-                quantity: 1,
+                quantity: 0,
                 cost: hardware.initial_cost,
                 cost_scale: 1,
                 time: hardware.initial_time,
@@ -37,6 +38,15 @@ class Hardware extends React.Component {
                 revenue_scale: 1,
                 is_managed: false
             }
+        }
+    }
+
+    componentDidMount() {
+        if (this.state.type == 'vaccuum_tube' && this.state.quantity == 0) {
+            this.upgrade(1)
+        }
+        if (this.state.has_started) {
+            this.startInterval()
         }
     }
 
@@ -50,14 +60,32 @@ class Hardware extends React.Component {
             has_started: true,
             start_time: now,
             time_left: this.state.time
-        })
-        this.startInterval()
+        }, () => this.startInterval())
     }
 
     startInterval() {
-        const interval = setInterval(() => {
+        this.interval = setInterval(() => {
             this.update()
         }, (1 / 60))
+    }
+
+    purchase(quantity) {
+        if (this.props.purchase(quantity, this.state.cost, this.state.coefficient)) {
+            this.upgrade(quantity)
+        }
+    }
+
+    upgrade(num_times) {
+        let quantity_increase = 0
+        let new_cost = this.state.cost
+        for (let i = 0; i < num_times; i++) {
+            quantity_increase += 1
+            new_cost *= this.state.coefficient
+        }
+        this.setState({
+            quantity: this.state.quantity + quantity_increase,
+            cost: new_cost
+        }, () => this.updateRevenue())
     }
 
     update() {
@@ -70,21 +98,23 @@ class Hardware extends React.Component {
         this.setState({
             time_left: time_left <= 0 ? 0 : time_left
         })
-        localStorage.setItem(this.state.type, JSON.stringify(this.state))
         if (time_left <= 0) {
+            this.setState({
+                has_started: false
+            })
             this.props.gainRevenue(this.state.revenue)
-            clearInterval(this.startInterval.interval)
-            this.state.has_started = false
+            clearInterval(this.interval)
             if (this.state.is_managed) {
                 this.start()
             }
         }
+        localStorage.setItem(this.state.type, JSON.stringify(this.state))
     }
 
     updateRevenue() {
-        const revenue = this.state.initial_revenue * this.state.quantity * this.state.revenue_scale
+        let new_revenue = this.state.initial_revenue * this.state.quantity * this.state.revenue_scale
         this.setState({
-            revenue: revenue
+            revenue: new_revenue
         })
     }
 
@@ -93,19 +123,33 @@ class Hardware extends React.Component {
             <div className='hardware'>
                 <button id="start-button" onClick={() => this.start()} ><h5>START</h5></button>
                 <div id="content">
-                    <h3 id="name">{this.state.name}</h3>
-                    <h3 id="time_left">{(this.state.time_left / 1000).toFixed(2)}</h3>
-                    <h3 id="cost">{this.state.cost}</h3>
-                    <h3 id="revenue">{this.state.revenue}</h3>
+                    <h3 id="name">{'[' + this.state.quantity + '] ' + this.state.name}</h3>
+                    <h3 id="time_left">{toHourMinSec(this.state.time_left)}</h3>
+                    <h3 id="time_left_suffix">HH:MM:SS</h3>
+                    <button id="purchase_button" onClick={() => this.purchase(1)}>
+                        <h3 id="buy">
+                            BUY 1
+                        </h3>
+                        <h3 id="cost">
+                            { String(truncateCurrency(this.state.cost).value.toFixed(2)).padStart(6, 0)}
+                        </h3>
+                        <h3 id="cost_suffix">
+                            { truncateCurrency(this.state.cost).suffix }
+                        </h3>
+                    </button>
+                    <h3 id="revenue">
+                            { String(truncateCurrency(this.state.revenue).value.toFixed(2)).padStart(6, 0)}
+                        </h3>
+                    <h3 id="revenue_suffix">
+                        { truncateCurrency(this.state.revenue).suffix }
+                    </h3>
                 </div>
             </div>
         )
     }
 
     componentWillUnmount() {
-        if (this.startInterval.interval !== null) {
-            clearInterval(this.startInterval.interval)
-        }
+        clearInterval(this.interval)
     }
 }
 export default Hardware

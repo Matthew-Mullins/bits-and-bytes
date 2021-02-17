@@ -149,8 +149,8 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   color: white;
   margin: 0;
   text-align: left;
-  font-size: 40px;
-  align-content: center;
+  font-size: 28px;
+  align-self: center;
   grid-column: 1 / span 2;
   grid-row: 1;
 }
@@ -159,19 +159,73 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   color: white;
   margin: 0;
   text-align: right;
-  font-size: 40px;
-  align-content: center;
+  font-size: 28px;
+  align-self: flex-start;
   grid-column: 2;
   grid-row: 1;
+}
+
+.hardware #content #time_left_suffix {
+  color: white;
+  margin: 0;
+  text-align: right;
+  font-size: 28px;
+  align-self: flex-end;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.hardware #content #purchase_button {
+  color: white;
+  margin: 3px;
+  border: 1px solid white;
+  background-color: black;
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 20px;
+}
+
+.hardware #content #purchase_button:hover {
+  cursor: pointer;
+  background-color: rgb(16, 16, 16);
+}
+
+.hardware #purchase_button:active {
+  outline: none;
+  background-color: rgb(64, 64, 64);
+}
+
+.hardware #purchase_button:focus {
+  outline: none;
+}
+
+.hardware #content #purchase_button #buy {
+  color: white;
+  margin: 0;
+  text-align: center;
+  font-size: 32px;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
 }
 
 .hardware #content #cost {
   color: white;
   margin: 0;
-  text-align: left;
-  font-size: 40px;
-  align-content: center;
-  grid-column: 1;
+  text-align: right;
+  font-size: 21px;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.hardware #content #cost_suffix {
+  color: white;
+  margin: 0;
+  text-align: right;
+  font-size: 21px;
+  grid-column: 2;
   grid-row: 2;
 }
 
@@ -179,14 +233,28 @@ h6 {font-family:'VT323', monospace; font-weight: 200; margin: 0; padding: 0;}
   color: white;
   margin: 0;
   text-align: right;
-  font-size: 40px;
-  align-content: center;
+  font-size: 28px;
+  align-self: flex-start;
   grid-column: 2;
   grid-row: 2;
 }
 
-@media only screen and (max-width: 1300px) {
+.hardware #content #revenue_suffix {
+  color: white;
+  margin: 0;
+  text-align: right;
+  font-size: 28px;
+  align-self: flex-end;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+@media only screen and (max-width: 1425px) {
   .hardwares {
     grid-template-columns: 1fr;
+  }
+
+  .hardware {
+    min-width: 450px;
   }
 }

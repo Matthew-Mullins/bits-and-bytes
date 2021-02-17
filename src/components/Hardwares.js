@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Hardware from './Hardware'
 
-const Hardwares = ({ gainRevenue }) => {
+const Hardwares = ({ gainRevenue, purchase }) => {
     const [hardwares, setHardwares] = useState(
         [
             {
@@ -100,7 +100,7 @@ const Hardwares = ({ gainRevenue }) => {
     return (
         <div className="hardwares">
             {hardwares.map((hardware) => (
-                <Hardware key={hardware.type} hardware={hardware} gainRevenue={gainRevenue}/>
+                <Hardware key={hardware.type} hardware={hardware} gainRevenue={gainRevenue} purchase={purchase}/>
             ))}
         </div>
     )
