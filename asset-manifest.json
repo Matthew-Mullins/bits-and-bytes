@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/bits-and-bytes/static/css/main.16f7b276.chunk.css",
-    "main.js": "/bits-and-bytes/static/js/main.56bf2f1a.chunk.js",
-    "main.js.map": "/bits-and-bytes/static/js/main.56bf2f1a.chunk.js.map",
+    "main.css": "/bits-and-bytes/static/css/main.410acf07.chunk.css",
+    "main.js": "/bits-and-bytes/static/js/main.bfb6c873.chunk.js",
+    "main.js.map": "/bits-and-bytes/static/js/main.bfb6c873.chunk.js.map",
     "runtime-main.js": "/bits-and-bytes/static/js/runtime-main.87327a65.js",
     "runtime-main.js.map": "/bits-and-bytes/static/js/runtime-main.87327a65.js.map",
     "static/js/2.a7dbd79a.chunk.js": "/bits-and-bytes/static/js/2.a7dbd79a.chunk.js",
     "static/js/2.a7dbd79a.chunk.js.map": "/bits-and-bytes/static/js/2.a7dbd79a.chunk.js.map",
     "index.html": "/bits-and-bytes/index.html",
-    "static/css/main.16f7b276.chunk.css.map": "/bits-and-bytes/static/css/main.16f7b276.chunk.css.map",
+    "static/css/main.410acf07.chunk.css.map": "/bits-and-bytes/static/css/main.410acf07.chunk.css.map",
     "static/js/2.a7dbd79a.chunk.js.LICENSE.txt": "/bits-and-bytes/static/js/2.a7dbd79a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.87327a65.js",
     "static/js/2.a7dbd79a.chunk.js",
-    "static/css/main.16f7b276.chunk.css",
-    "static/js/main.56bf2f1a.chunk.js"
+    "static/css/main.410acf07.chunk.css",
+    "static/js/main.bfb6c873.chunk.js"
   ]
 }
